@@ -1,21 +1,15 @@
 from flask import Flask, request
 import requests
-
-app = Flask(__name__)
-
 import os
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
-
+app = Flask(__name__)
 
 @app.route("/update", methods=["GET"])
 def update():
     data1 = request.args.get("data1", default="0")
     data2 = request.args.get("data2", default="0")
-    
-    # Wuaze/000webhost siteye yönlendirme (kendi URL’ine göre değiştir)
+
+    # Wuaze/000webhost sitesine veri yönlendirme
     wuaze_url = f"http://sayac-takip.wuaze.com/update.php?data1={data1}&data2={data2}&i=1"
     try:
         requests.get(wuaze_url)
@@ -38,4 +32,8 @@ def status():
 
 @app.route("/")
 def home():
-    return "Render sunucu çalışıyor"
+    return "Render sunucu çalışıyor."
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
