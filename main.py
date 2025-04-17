@@ -9,14 +9,20 @@ def update():
     data1 = request.args.get("data1", default="0")
     data2 = request.args.get("data2", default="0")
 
-    # Wuaze/000webhost sitesine veri yönlendirme
+    # Wuaze (000Webhost) adresine yönlendirme (kendi URL'ine göre değiştir)
     wuaze_url = f"http://sayac-takip.wuaze.com/update.php?data1={data1}&data2={data2}&i=1"
+
     try:
-        requests.get(wuaze_url)
+        # Tarayıcı gibi davranması için User-Agent başlığı eklendi
+        headers = {
+            "User-Agent": "Mozilla/5.0"
+        }
+        response = requests.get(wuaze_url, headers=headers, timeout=5)
+        response.raise_for_status()  # HTTP hatalarını yakalar
     except Exception as e:
         return f"Wuaze aktarım hatası: {e}"
 
-    return f"Render veri alındı ve yönlendirildi: {data1}, {data2}"
+    return f"Render veri alındı ve wuaze'e yönlendirildi: {data1}, {data2}"
 
 @app.route("/sensor_data.txt")
 def get_data():
