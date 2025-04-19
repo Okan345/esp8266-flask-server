@@ -6,6 +6,9 @@ from flask_cors import CORS  # 🆕 CORS modülü eklendi
 app = Flask(__name__)
 CORS(app)  # 🆕 CORS aktif edildi
 
+app = Flask(__name__, static_folder='public', static_url_path='/public')
+
+
 @app.route("/update", methods=["GET"])
 def update():
     data1 = request.args.get("data1", default="0")
